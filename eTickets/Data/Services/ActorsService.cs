@@ -12,30 +12,43 @@ public class ActorsService : IActorsService
         _context = context;
     }
 
-    public void Add(Actor actor)
+    public async Task AddAsync(Actor actor)
     {
-        _context.Actors.Add(actor);
-        _context.SaveChanges();
+        await _context.Actors.AddAsync(actor);
+        await _context.SaveChangesAsync();
     }
 
-    public void Delete(int id)
+    public async Task DeleteAsync(int id)
     {
-        _context.Remove(id);
+        var actor = await _context.Actors.FirstOrDefaultAsync(actor => actor.Id == id);
+        if (actor == null)
+            return;
+
+        _context.Actors.Remove(actor);
+        await _context.SaveChangesAsync();
     }
 
-    public Actor GetActorById(int id)
+    public async Task<Actor> GetActorByIdAsync(int id)
     {
-        return _context.Actors.Find(id);
+        var results = await _context.Actors.FirstOrDefaultAsync(actor => actor.Id == id);
+        return results;
     }
 
-    async Task<IEnumerable<Actor>> IActorsService.GetAll()
+    public async Task<IEnumerable<Actor>> GetAllAsync()
     {
         var results = await _context.Actors.ToListAsync();
         return results;
     }
 
-    public Actor Updated(int id, Actor actor)
+    public async Task<Actor> UpdateAsync(int id, Actor actor)
     {
-        return null;
+        var actorToUpdated = await _context.Actors.FindAsync(id);
+
+        actorToUpdated.ProfilePictureURL = actor.ProfilePictureURL;
+        actorToUpdated.FullName = actor.FullName;
+        actorToUpdated.Bio = actor.Bio;
+        await _context.SaveChangesAsync();
+
+        return actorToUpdated;
     }
 }
