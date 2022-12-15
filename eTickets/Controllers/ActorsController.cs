@@ -35,7 +35,7 @@ public class ActorsController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var actorDetails = await _service.GetActorByIdAsync(id);
+        var actorDetails = await _service.GetByIdAsync(id);
         if (actorDetails == null)
             return View("NotFound");
 
@@ -44,7 +44,7 @@ public class ActorsController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var actor = await _service.GetActorByIdAsync(id);
+        var actor = await _service.GetByIdAsync(id);
         if (actor == null)
             return View("NotFound");
 
@@ -52,7 +52,7 @@ public class ActorsController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(int id, [Bind(nameof(actor.FullName), nameof(actor.ProfilePictureURL), nameof(actor.Bio))] Actor actor)
+    public async Task<IActionResult> Edit(int id, [Bind(nameof(actor.Id), nameof(actor.FullName), nameof(actor.ProfilePictureURL), nameof(actor.Bio))] Actor actor)
     {
         if (!ModelState.IsValid)
             return View(actor);
@@ -63,7 +63,7 @@ public class ActorsController : Controller
 
     public async Task<IActionResult> Delete(int id)
     {
-        var actor = await _service.GetActorByIdAsync(id);
+        var actor = await _service.GetByIdAsync(id);
         if (actor == null)
             return View("NotFound");
 
@@ -73,7 +73,7 @@ public class ActorsController : Controller
     [HttpPost]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var actor = await _service.GetActorByIdAsync(id);
+        var actor = await _service.GetByIdAsync(id);
         if (actor == null)
             return View("NotFound");
 
