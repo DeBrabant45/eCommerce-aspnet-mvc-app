@@ -11,7 +11,7 @@ public class EntityBaseRepository<T> : IEntityBaseRepository<T> where T : class,
         _context = context;
     }
 
-    public Task SaveChangesAsync() => _context.SaveChangesAsync();
+    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
     public async Task<IEnumerable<T>> GetAllAsync() => await _context.Set<T>().ToListAsync();
 
