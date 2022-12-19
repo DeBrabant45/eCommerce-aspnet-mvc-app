@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace eTickets.Data.Base;
 
@@ -39,5 +40,12 @@ public class EntityBaseRepository<T> : IEntityBaseRepository<T> where T : class,
         var entityEntry = _context.Entry<T>(entity);
         entityEntry.State = EntityState.Deleted;
         await SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includeProperties)
+    {
+        IQueryable<T> query = _context.Set<T>();
+        query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+        return await query.ToListAsync();
     }
 }
