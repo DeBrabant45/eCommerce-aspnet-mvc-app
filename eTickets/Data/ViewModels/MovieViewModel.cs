@@ -7,6 +7,7 @@ namespace eTickets.Data.ViewModels;
 
 public class MovieViewModel
 {
+    public int Id { get; set; }
 
     [Display(Name = "Name")]
     [Required(ErrorMessage = "Name is Required")]

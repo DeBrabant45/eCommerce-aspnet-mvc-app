@@ -17,8 +17,19 @@ public class MoviesController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var data = await _service.GetAllAsync(n => n.Cinema);
-        return View(data);
+        var allMovies = await _service.GetAllAsync(n => n.Cinema);
+        return View(allMovies);
+    }    
+    
+    public async Task<IActionResult> Filter(string searchString)
+    {
+        var allMovies = await _service.GetAllAsync(n => n.Cinema);
+        if (string.IsNullOrEmpty(searchString))
+            return View(nameof(Index), allMovies);
+
+        var filteredResult = allMovies.Where(n => n.Name.Contains(searchString) ||
+            n.Description.Contains(searchString)).ToList();
+        return View(nameof(Index), filteredResult);
     }
 
     public async Task<IActionResult> Details(int id)
@@ -43,6 +54,33 @@ public class MoviesController : Controller
         }
 
         await _service.AddNewMovieAsync(movieViewModel);
+        return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Edit(int id)
+    {
+        var movie = await _service.GetMovieById(id);
+        if (movie == null)
+            return View("NotFound");
+
+        var movieViewModel = await _service.SetMovieViewModel(movie);
+        await CreateMovieDropdown();
+        return View(movieViewModel);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(int id, MovieViewModel movieViewModel)
+    {
+        if (id != movieViewModel.Id)
+            return View("NotFound");
+
+        if (!ModelState.IsValid)
+        {
+            await CreateMovieDropdown();
+            return View(movieViewModel);
+        }
+
+        await _service.UpdateMovieAsync(movieViewModel);
         return RedirectToAction(nameof(Index));
     }
 
