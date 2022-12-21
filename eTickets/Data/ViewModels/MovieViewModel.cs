@@ -3,11 +3,10 @@ using eTickets.Data.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace eTickets.Models;
+namespace eTickets.Data.ViewModels;
 
-public class Movie : IEntityBase
+public class MovieViewModel
 {
-    [Key]
     public int Id { get; set; }
 
     [Display(Name = "Name")]
@@ -26,7 +25,7 @@ public class Movie : IEntityBase
     public double Price { get; set; }
 
     [Url]
-    [Display(Name = "ImageUrl")]
+    [Display(Name = "Movie poster URL")]
     [Required(ErrorMessage = "ImageUrl is Required")]
     public string ImageUrl { get; set; }
 
@@ -44,13 +43,16 @@ public class Movie : IEntityBase
     [Required(ErrorMessage = "Movie category is Required")]
     public MovieCategory MovieCategory { get; set; }
 
-    public List<Actor_Movie>? Actors_Movies { get; set; }
+    [Display(Name = "Select Actor(s)")]
+    [Required(ErrorMessage = "Actor is Required")]
+    public List<int>? ActorIds { get; set; }
 
+    [Display(Name = "Select Cinema")]
+    [Required(ErrorMessage = "Cinema is Required")]
     public int CinemaId { get; set; }
-    [ForeignKey(nameof(CinemaId))] 
-    public Cinema Cinema { get; set; }
 
+    [Display(Name = "Select Producer")]
+    [Required(ErrorMessage = "Producer is Required")]
     public int ProducerId { get; set; }
-    [ForeignKey(nameof(ProducerId))] 
-    public Producer Producer { get; set; }
+
 }
