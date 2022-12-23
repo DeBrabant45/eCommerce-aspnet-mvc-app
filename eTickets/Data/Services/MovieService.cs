@@ -37,7 +37,7 @@ public class MovieService : EntityBaseRepository<Movie>, IMovieService
         await SaveChangesAsync();
     }
 
-    public async Task<Movie> GetMovieById(int id)
+    public async Task<Movie> GetMovieByIdAsync(int id)
     {
         var details = await _context.Movies
             .Include(c => c.Cinema)

@@ -34,7 +34,7 @@ public class MoviesController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var detail = await _service.GetMovieById(id);
+        var detail = await _service.GetMovieByIdAsync(id);
         return View(detail);
     }
 
@@ -59,7 +59,7 @@ public class MoviesController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var movie = await _service.GetMovieById(id);
+        var movie = await _service.GetMovieByIdAsync(id);
         if (movie == null)
             return View("NotFound");
 
