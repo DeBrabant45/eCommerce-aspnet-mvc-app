@@ -6,7 +6,7 @@ namespace eTickets.Data.Services;
 
 public interface IMovieService : IEntityBaseRepository<Movie>
 {
-    public Task<Movie> GetMovieById(int id);
+    public Task<Movie> GetMovieByIdAsync(int id);
     public Task<MovieDropdownViewModel> GetMoviesDropdown();
     public Task AddNewMovieAsync(MovieViewModel movieViewModel);
     public Task<MovieViewModel> SetMovieViewModel(Movie movie);
